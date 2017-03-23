@@ -12,27 +12,7 @@
 
 <body>
   <div class="container">
-    <header>
-      <h1>Ma liste de courses</h1>
-    </header>
-    <section ng-controller="shoppingCtrl">
-      <form id="shopping-form" ng-submit="addItem()">
-        <input id="new-item" class="form-control" placeholder="Entrez le nom d'un nouvel article" ng-model="model.newItem" />
-      </form>
-      <article ng-show="model.list.length">
-        <ul id="shopping-list">
-          <li ng-repeat="item in model.list" ng-class="{completed: item.completed}">
-            <div class="view">
-              <input class="mark" type="checkbox" ng-model="item.completed" />
-              <span>{{item.title}}</span>
-              <span class="close" ng-click="removeItem(item)">x</span>
-            </div>
-          </li>
-        </ul>
-        <button class="btn btn-primary" id="mark-all" ng-model="model.allChecked" ng-click="markAll(model.allChecked)">Tout cocher</button>
-        <button class="btn btn-danger" ng-click="clearCompletedItems()">Supprimer les tâches cochées</button>
-      </article>
-    </section>
+    <shopping-list></shopping-list>
   </div>
 
   <script src="demo.js"></script>
