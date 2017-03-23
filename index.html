@@ -1,42 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" ng-app="shoppingApp">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <meta charset="utf-8" />
+  <title>Shopping List</title>
+  <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="demo.css">
+
+  <script src="vendors/angular/angular.js"></script>
 </head>
 
-<body ng-app="app">
-
-  <div class="container" ng-controller="mainController">
-    <h1>Entrez un message :</h1>
-    <form ng-submit="add()">
-      <input type="text" class="form-control" ng-model="message">
-    </form>
-    <table class="table" ng-if="messages.length > 0">
-      <tr ng-repeat="message in messages">
-        <td>{{$index}}</td>
-        <td>{{message}}</td>
-      </tr>
-    </table>
+<body>
+  <div class="container">
+    <header>
+      <h1>Ma liste de courses</h1>
+    </header>
+    <section ng-controller="shoppingCtrl">
+      <form id="shopping-form" ng-submit="addItem()">
+        <input id="new-item" class="form-control" placeholder="Entrez le nom d'un nouvel article" ng-model="model.newItem" />
+      </form>
+      <article ng-show="model.list.length">
+        <ul id="shopping-list">
+          <li ng-repeat="item in model.list" ng-class="{completed: item.completed}">
+            <div class="view">
+              <input class="mark" type="checkbox" ng-model="item.completed" />
+              <span>{{item.title}}</span>
+              <span class="close" ng-click="removeItem(item)">x</span>
+            </div>
+          </li>
+        </ul>
+        <button class="btn btn-primary" id="mark-all" ng-model="model.allChecked" ng-click="markAll(model.allChecked)">Tout cocher</button>
+        <button class="btn btn-danger" ng-click="clearCompletedItems()">Supprimer les tâches cochées</button>
+      </article>
+    </section>
   </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
-  <script>
-    angular.module('app', []).controller('mainController', function ($scope) {
-      $scope.messages = [];
-      $scope.add = function () {
-        var msg = $scope.message.trim();
-        $scope.message = '';
-        if (msg) {
-          $scope.messages.push(msg)
-        }
-      };
-    });
-  </script>
+  <script src="demo.js"></script>
 </body>
 
 </html>

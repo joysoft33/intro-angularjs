@@ -1,0 +1,11 @@
+#shopping-list {
+  padding: 15px;
+}
+
+#shopping-list>li {
+  list-style: none;
+  padding: 10px;
+  background-color: #eee;
+  margin: 4px;
+  border-radius: 3px;
+}
