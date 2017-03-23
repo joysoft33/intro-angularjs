@@ -4,6 +4,7 @@
  * The AngularJS recipes app
  */
 angular.module('recipesApp', [
-  "recipes.components",
-  "recipes.services"
+  'ui.router',
+  'recipes.components',
+  'recipes.services'
 ]);

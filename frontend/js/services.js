@@ -2,12 +2,13 @@
 
 const services = angular.module('recipes.services', []);
 
-const API_URL = "http://localhost:3000/dishes";
-
 /**
  * The recipes service
  */
 services.service('RecipesService', function ($http) {
+
+  const API_URL = "http://localhost:3000/dishes";
+  
   return {
     get() {
       // HTTP Request method GET to our express API

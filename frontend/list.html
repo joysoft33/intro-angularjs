@@ -1,6 +1,3 @@
-<header>
-  <h1>Recettes maison</h1>
-</header>
 <div ng-if="$ctrl.list.length > 0">
   <input id="search" class="form-control" placeholder="Rechercher..." ng-model="$ctrl.query" />
   <div class="content">
@@ -18,7 +15,7 @@
   </div>
 </div>
 <div class="actions">
-  <button class="btn btn-success" ng-click="$ctrl.addItem()">Ajouter...</button>
+  <a class="btn btn-success" ui-sref="create">Ajouter...</a>
   <span ng-if="$ctrl.list.length > 0">
     <button class="btn btn-primary" ng-model="$ctrl.allChecked" ng-click="$ctrl.markAll($ctrl.allChecked)">Tout cocher</button>
     <button class="btn btn-danger" ng-click="$ctrl.clearCompletedItems()">Supprimer les recettes cochées</button>
