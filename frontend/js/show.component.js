@@ -15,17 +15,11 @@ angular.module('recipes.components').component("recipeShow", {
 
     function (RecipesService, $state) {
 
-      var vm = this;
-
-      vm.$onInit = () => {
-        vm.recipe = {};
+      this.save = (recipe) => {
+        RecipesService.save(recipe).then((items) => {
+          $state.go('list');
+        }).catch((err) => {});
       };
-
-      // vm.save = (recipe) => {
-      //   RecipesService.save(recipe).then((items) => {
-      //     $state.go('list');
-      //   }).catch((err) => {});
-      // };
 
     }
   ]

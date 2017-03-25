@@ -11,12 +11,9 @@ angular.module('recipes.components').component("recipesList", {
     recipes: '<',
   },
 
-  controller: ['RecipesService', 'recipes',
+  controller: ['RecipesService',
 
-    function (RecipesService, recipes) {
-
-      //var vm = this;
-      //this.recipes = recipes;
+    function (RecipesService) {
 
       // Remove an existing recipe
       this.removeRecipe = (recipe) => {

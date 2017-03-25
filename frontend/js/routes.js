@@ -7,22 +7,30 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
 
     $stateProvider
-      .state('list', {
+      .state({
+        name: 'list',
         url: '/views/list',
-        template: '<recipes-list recipes="$resolve.recipes"></recipes-list>',
+        component: 'recipesList',
         resolve: {
           recipes: ['RecipesService', function (RecipesService) {
             return RecipesService.get();
           }]
         }
       })
-      .state('create', {
+      .state({
+        name: 'create',
         url: '/views/create',
-        template: '<recipe-create></recipe-create>'
+        component: 'recipeCreate'
       })
-      .state('show', {
-        url: '/view/show/:pageName',
-        template: '<recipe-show></recipe-show>'
+      .state({
+        name: 'show',
+        url: '/view/show/{id}',
+        component: 'recipeShow',
+        resolve: {
+          recipes: ['RecipesService', '$stateParams', function (RecipesService, $stateParams) {
+            return RecipesService.getById($stateParams.id);
+          }]
+        }
       });
 
     $urlRouterProvider.otherwise('/views/list');

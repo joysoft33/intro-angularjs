@@ -15,18 +15,12 @@ angular.module('recipes.components').component("recipeCreate", {
 
     function (RecipesService, $state) {
 
-      var vm = this;
-
-      vm.$onInit = () => {
-        vm.recipe = {};
-      };
-
-      vm.save = (recipe) => {
+      // Save the new recipe
+      this.save = (recipe) => {
         RecipesService.save(recipe).then((items) => {
           $state.go('list');
         }).catch((err) => {});
       };
-
     }
   ]
 });
