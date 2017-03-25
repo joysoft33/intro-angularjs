@@ -1,5 +1,6 @@
 #search {
   max-width: 320px;
+  display: inline-block;
 }
 
 .content {
@@ -21,7 +22,7 @@
 
 .content>.item>img {
   display: inline-block;
-  max-width: 150px;
+  width: 240px;
 }
 
 .content>.item>.text {
@@ -32,12 +33,6 @@
   font-weight: bold;
 }
 
-.content>.item>.commands>input[type='checkbox'] {
-    float: right;
-    margin-top: 7px;
-}
-
 .content>.item>.commands>.close {
     float: right;
-    margin-left: 15px;
 }

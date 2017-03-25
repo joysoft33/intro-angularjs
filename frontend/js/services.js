@@ -8,28 +8,23 @@ const services = angular.module('recipes.services', []);
 services.service('RecipesService', function ($http) {
 
   const API_URL = "http://localhost:3000/dishes";
-  
+
   return {
     get() {
-      // HTTP Request method GET to our express API
       return $http.get(API_URL)
     },
     getById(id) {
-      // HTTP Request method GET with param (post id) to our express API
       return $http.get(API_URL + '/' + id)
     },
-    save(post) {
-      if (post._id) {
-        // HTTP Request method PUT (update) with param and data (post) to our express API
-        return $http.put(API_URL + '/' + post._id, post)
+    save(recipe) {
+      if (recipe.id) {
+        return $http.put(API_URL + '/' + recipe.id, recipe)
       } else {
-        // HTTP Request method POST (create) with data (post) to our express API
-        return $http.post(API_URL, post)
+        return $http.post(API_URL, recipe)
       }
     },
-    delete(post) {
-      // HTTP Request method DELETE (delete) with param (post id) to our express API
-      return $http.delete(API_URL + '/' + post._id)
+    delete(recipe) {
+      return $http.delete(API_URL + '/' + recipe.id)
     }
   }
 });
