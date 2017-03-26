@@ -8,18 +8,15 @@ var gulp = require('gulp'),
   gulpLoadPlugins = require('gulp-load-plugins'),
   plugins = gulpLoadPlugins();
 
-const vendors = [
-  'angular',
-  'angular-ui-router',
-  'bootstrap'
-];
+var packageJson = require('./package.json');
+var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
 var config = {
   index: 'app/index.html',
   entry: 'app/js/app.js',
   js: 'app/js/**/*.js',
   images: 'app/images/*.*',
-  fonts: 'app/fonts/*.*',
+  fonts: ['app/fonts/*.*', 'node_modules/bootstrap/dist/fonts/*.*'],
   html: 'app/**/*.html',
   styles: 'app/css/*.css'
 }
@@ -53,7 +50,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('vet', function () {
-  return gulp.src([config.js])
+  return gulp.src(config.js)
     .pipe(plugins.jshint())
     .pipe(plugins.jscs())
     .pipe(plugins.jshint.reporter('jshint-stylish'), {
@@ -63,7 +60,7 @@ gulp.task('vet', function () {
 });
 
 gulp.task('dependencies', function () {
-  return gulp.src([config.index])
+  return gulp.src(config.index)
     .pipe(plugins.htmlDependencies({
       dest: dist.path,
       prefix: dist.vendors
@@ -72,41 +69,44 @@ gulp.task('dependencies', function () {
 });
 
 // DEV
-gulp.task('stylesDev', function () {
-  return gulp.src([config.styles])
+gulp.task('stylesDev', ['clean-styles'], function () {
+  return gulp.src(config.styles)
     .pipe(gulp.dest(dist.path + dist.styles))
 });
 
-gulp.task('buildDev', ['dependencies'], function () {
+gulp.task('buildDev', ['clean-js', 'dependencies'], function () {
   return browserify({
       entries: [config.entry],
       extensions: ['.js'],
       debug: true
     })
-    .external(vendors)
+    .external(dependencies)
     .transform('babelify', {
       presets: ['es2015']
     })
     .bundle()
     .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(plugins.ngAnnotate())
+    .pipe(plugins.angularEmbedTemplates())
     .pipe(gulp.dest(dist.path + dist.scripts))
-    /*.pipe(plugins.livereload())*/;
+    pipe(plugins.livereload());
 });
 
 // PROD
-gulp.task('stylesProd', function () {
-  return gulp.src([config.styles])
+gulp.task('stylesProd', ['clean-styles'], function () {
+  return gulp.src(config.styles)
     .pipe(plugins.cleanCss())
     .pipe(gulp.dest(dist.path + dist.styles))
 });
 
-gulp.task('buildProd', ['dependencies'], function () {
+gulp.task('buildProd', ['clean-js', 'dependencies'], function () {
   return browserify({
       entries: [config.entry],
       extensions: ['.js'],
       debug: true
     })
-    .external(vendors)
+    .external(dependencies)
     .transform('babelify', {
       presets: ['es2015']
     })
@@ -116,17 +116,23 @@ gulp.task('buildProd', ['dependencies'], function () {
     .pipe(plugins.ngAnnotate())
     .pipe(plugins.uglify())
     .pipe(gulp.dest(dist.path + dist.scripts))
-    /*.pipe(plugins.livereload())*/;
+    .pipe(plugins.livereload());
 });
 
 gulp.task('copy-images', ['clean-images'], function () {
-  return gulp.src([config.images])
+  return gulp.src(config.images)
     .pipe(gulp.dest(dist.path + dist.images));
 });
 
 gulp.task('copy-fonts', ['clean-fonts'], function () {
-  return gulp.src([config.fonts])
-    .pipe(gulp.dest(dist.path + dist.fonts));
+  return gulp.src(config.fonts, { base: process.cwd() })
+    .pipe(plugins.rename(function(path){
+      var parts = path.dirname.split('/');
+      if (parts[0] !== "app") {
+        path.dirname = dist.vendors + parts.slice(1).join('/');
+      }
+    }))
+    .pipe(gulp.dest(dist.path));
 });
 
 gulp.task('clean-images', function () {

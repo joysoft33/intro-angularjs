@@ -9,7 +9,7 @@
         <div class="type">{{recipe.type}}</div>
       </div>
       <div class="commands">
-        <i class="glyphicon glyphicon-pencil" ng-click="$ctrl.editRecipe(recipe)"></i>
+        <a ui-sref="show({id:recipe.id})"><i class="glyphicon glyphicon-pencil"></i></a>
         <i class="glyphicon glyphicon-trash" ng-click="$ctrl.removeRecipe(recipe)"></i>
       </div>
     </div>

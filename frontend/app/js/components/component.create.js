@@ -5,7 +5,7 @@
  */
 module.exports = {
 
-  templateUrl: '/views/create.html',
+  templateUrl: '/app/views/create.html',
 
   bindings: {
     recipe: '<'

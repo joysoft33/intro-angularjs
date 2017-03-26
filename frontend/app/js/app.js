@@ -1,10 +1,7 @@
 'use strict';
 
-import angular from 'angular';
-import 'angular-ui-router';
-
-import './services';
-import './components';
+require('./services');
+require('./components');
 
 /**
  * The AngularJS recipes app

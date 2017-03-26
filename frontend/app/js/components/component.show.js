@@ -5,7 +5,7 @@
  */
 module.exports = {
 
-  templateUrl: '/views/show.html',
+  templateUrl: '/app/views/show.html',
 
   bindings: {
     recipe: '<'
@@ -14,6 +14,8 @@ module.exports = {
   controller: function (RecipesService, $state) {
     'ngInject';
 
+    this.a = this.recipe;
+    
     //
     this.save = (recipe) => {
       RecipesService.save(recipe).then((items) => {

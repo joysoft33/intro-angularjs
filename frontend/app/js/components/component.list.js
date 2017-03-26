@@ -5,7 +5,7 @@
  */
 module.exports = {
 
-  templateUrl: '/views/list.html',
+  templateUrl: '/app/views/list.html',
 
   bindings: {
     recipes: '<',
@@ -13,7 +13,7 @@ module.exports = {
 
   controller: function (RecipesService) {
     'ngInject';
-    
+
     // Remove an existing recipe
     this.removeRecipe = (recipe) => {
       RecipesService.delete(recipe).then(() => {

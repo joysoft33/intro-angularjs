@@ -5,16 +5,16 @@
  */
 module.exports = function ($stateProvider, $urlRouterProvider) {
   'ngInject';
-  
+
   $stateProvider
     .state({
       name: 'list',
       url: '/views/list',
       component: 'recipesList',
       resolve: {
-        recipes: ['RecipesService', function (RecipesService) {
+        recipes: function (RecipesService) {
           return RecipesService.getAll();
-        }]
+        }
       }
     })
     .state({
@@ -24,12 +24,12 @@ module.exports = function ($stateProvider, $urlRouterProvider) {
     })
     .state({
       name: 'show',
-      url: '/view/show/{id}',
+      url: '/views/show/{id}',
       component: 'recipeShow',
       resolve: {
-        recipes: ['RecipesService', '$stateParams', function (RecipesService, $stateParams) {
+        recipes: function (RecipesService, $stateParams) {
           return RecipesService.getById($stateParams.id);
-        }]
+        }
       }
     });
 
