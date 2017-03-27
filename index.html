@@ -10,8 +10,21 @@
 
 <body>
   <div class="container">
-    <h1>Hello World</h1>
+    <h1>Hello <span id="edit">World</span></h1>
+    <input id="input" type="text" />
   </div>
+
+  <script>
+    window.onload = function() {
+
+      var input = document.getElementById('input');
+      var edit = document.getElementById('edit');
+
+      input.addEventListener('input', function(e) {
+        edit.textContent = e.currentTarget.value;
+      });
+    };
+  </script>
 </body>
 
 </html>
