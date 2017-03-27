@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
         url: '/view/show/{id}',
         component: 'recipeShow',
         resolve: {
-          recipes: ['RecipesService', '$stateParams', function (RecipesService, $stateParams) {
+          recipe: ['RecipesService', '$stateParams', function (RecipesService, $stateParams) {
             return RecipesService.getById($stateParams.id);
           }]
         }
