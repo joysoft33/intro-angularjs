@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * The recipeshow component
+ * The recipeShow component
  */
 angular.module('recipes.components')
 
