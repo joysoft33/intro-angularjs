@@ -3,24 +3,26 @@
 /**
  * The recipeCreate component
  */
-angular.module('recipes.components').component("recipeCreate", {
+angular.module('recipes.components')
 
-  templateUrl: '/views/create.html',
+  .component("recipeCreate", {
 
-  bindings: {
-    recipe: '<'
-  },
+    templateUrl: '/views/create.html',
 
-  controller: ['RecipesService', '$state',
+    bindings: {
+      recipe: '<'
+    },
 
-    function (RecipesService, $state) {
+    controller: ['RecipesService', '$state',
 
-      // Save the new recipe
-      this.save = (recipe) => {
-        RecipesService.save(recipe).then((items) => {
-          $state.go('list');
-        }).catch((err) => {});
-      };
-    }
-  ]
-});
+      function (RecipesService, $state) {
+
+        // Save the new recipe
+        this.save = (recipe) => {
+          RecipesService.save(recipe).then((items) => {
+            $state.go('list');
+          }).catch((err) => {});
+        };
+      }
+    ]
+  });

@@ -3,24 +3,26 @@
 /**
  * The recipesList component
  */
-angular.module('recipes.components').component("recipesList", {
+angular.module('recipes.components')
 
-  templateUrl: '/views/list.html',
+  .component("recipesList", {
 
-  bindings: {
-    recipes: '<',
-  },
+    templateUrl: '/views/list.html',
 
-  controller: ['RecipesService',
+    bindings: {
+      recipes: '<',
+    },
 
-    function (RecipesService) {
+    controller: ['RecipesService',
 
-      // Remove an existing recipe
-      this.removeRecipe = (recipe) => {
-        RecipesService.delete(recipe).then(() => {
-          this.recipes.splice(this.recipes.indexOf(recipe), 1);
-        }).catch((err) => {});
-      };
-    }
-  ]
-});
+      function (RecipesService) {
+
+        // Remove an existing recipe
+        this.removeRecipe = (recipe) => {
+          RecipesService.delete(recipe).then(() => {
+            this.recipes.splice(this.recipes.indexOf(recipe), 1);
+          }).catch((err) => {});
+        };
+      }
+    ]
+  });
