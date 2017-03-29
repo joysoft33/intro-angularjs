@@ -1,59 +1,56 @@
 'use strict';
 
-const components = angular.module('recipes.components', []);
-
 /**
  * The recipesList component
  */
-components.component("recipesList", {
+angular.module('recipes.components', [])
 
-  templateUrl: '/list.html',
+  .component("recipesList", {
 
-  bindings: {
-    list: '<',
-    newItem: '@',
-    allChecked: '<'
-  },
+    templateUrl: '/list.html',
 
-  controller: ['RecipesService', function (RecipesService) {
+    bindings: {
+      list: '<',
+      query: '@',
+      newItem: '@',
+      allChecked: '<'
+    },
 
-    var vm = this;
+    controller: ['RecipesService', function (RecipesService) {
 
-    vm.$onInit = () => {
-      
-      vm.list = [];
-      vm.query = '';
-      vm.allChecked = false;
+      this.model = {
+        list: [],
+        query: '',
+        allChecked: false
+      };
 
-      vm.getAllItems();
-    };
+      this.$onInit = () => {
+        this.getAllItems();
+      };
 
-    vm.getAllItems = () => {
-      RecipesService.get().then((items) => {
-        vm.list = items.data;
-      }).catch((err) => {
-      });
-    };
+      this.getAllItems = () => {
+        RecipesService.get().then((items) => {
+          this.model.list = items.data;
+        }).catch((err) => {});
+      };
 
-    // Remove an existing item
-    vm.removeItem = (item) => {
-      vm.list.splice(vm.list.indexOf(item), 1);
-    };
+      // Remove an existing item
+      this.removeItem = (item) => {
+        RecipesService.delete(item).then((items) => {
+          this.model.list.splice(this.model.list.indexOf(item), 1);
+        }).catch((err) => {});
+      };
 
-    // Toggle items completion flag
-    vm.markAll = (completed) => {
-      vm.list.forEach(function (item) {
-        item.completed = !completed;
-      });
-      vm.allChecked = !completed;
-    };
+      // Toggle items completion flag
+      this.markAll = (completed) => {
+        this.model.list.forEach((item) => item.completed = !completed);
+        this.model.allChecked = !completed;
+      };
 
-    // Remove all checked items
-    vm.clearCompletedItems = () => {
-      vm.list = vm.list.filter(function (item) {
-        return !item.completed;
-      });
-    };
+      // Remove all checked items
+      this.clearCompletedItems = () => {
+        this.model.list = this.model.list.filter((item) => !item.completed);
+      };
 
-  }]
-});
+    }]
+  });
