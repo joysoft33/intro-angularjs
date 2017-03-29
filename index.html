@@ -19,9 +19,9 @@
       <form id="shopping-form" ng-submit="addItem()">
         <input id="new-item" class="form-control" placeholder="Entrez le nom d'un nouvel article" ng-model="model.newItem" />
       </form>
-      <article ng-show="model.list.length">
+      <article ng-if="model.list.length > 0">
         <ul id="shopping-list">
-          <li ng-repeat="item in model.list" ng-class="{completed: item.completed}">
+          <li ng-repeat="item in model.list" ng-class="{completed: model.list.length >= 3}">
             <div class="view">
               <input class="mark" type="checkbox" ng-model="item.completed" />
               <span>{{item.title}}</span>

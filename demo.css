@@ -9,3 +9,8 @@
   margin: 4px;
   border-radius: 3px;
 }
+
+#shopping-list>li.completed {
+  background-color: red;
+}
+
