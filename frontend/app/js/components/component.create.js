@@ -15,7 +15,7 @@ module.exports = {
     'ngInject';
 
     // Save the new recipe
-    this.save = (recipe) => {
+    this.saveRecipe = (recipe) => {
       RecipesService.save(recipe).then((items) => {
         $state.go('list');
       }).catch((err) => {});

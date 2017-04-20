@@ -1,0 +1,45 @@
+#search {
+  max-width: 320px;
+  display: inline-block;
+}
+
+.content {
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: inline-block;
+
+  & > .item {
+    padding: 15px;
+    float: left;
+    background-color: #eee;
+    margin: 4px;
+
+    img {
+      display: inline-block;
+      width: 190px;
+    }
+
+    .text {
+      margin: 2px 5px;
+
+      .name {
+        font-weight: bold;
+      }
+    }
+
+    & .commands > * {
+      padding: 5px;
+      float: right;
+
+      &:hover {
+        background-color: #ccc;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.item-actions {
+  margin-top: 20px;
+}

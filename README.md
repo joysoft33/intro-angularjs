@@ -7,4 +7,4 @@ AngularJS for beginners - Recipes sample application
 - service
 - route
 
--
+- Gulp task runner (dev / prod)

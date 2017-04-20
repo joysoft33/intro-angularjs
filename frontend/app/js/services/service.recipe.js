@@ -11,9 +11,9 @@ module.exports = function ($http, $log, $q) {
   this.getAll = function () {
     var deferred = $q.defer();
 
-    $http.get(API_URL).then(function (response) {
+    $http.get(API_URL).then((response) => {
       deferred.resolve(response.data);
-    }, function (error) {
+    }).catch((error) => {
       deferred.reject(error);
       $log.error(error);
     });
@@ -24,9 +24,9 @@ module.exports = function ($http, $log, $q) {
   this.getById = function (id) {
     var deferred = $q.defer();
 
-    $http.get(API_URL + '/' + id).then(function (response) {
+    $http.get(API_URL + '/' + id).then((response) => {
       deferred.resolve(response.data);
-    }, function (error) {
+    }).catch((error) => {
       deferred.reject(error);
       $log.error(error);
     });
@@ -40,9 +40,9 @@ module.exports = function ($http, $log, $q) {
     (recipe.id ?
       $http.put(API_URL + '/' + recipe.id, recipe) :
       $http.post(API_URL, recipe)
-    ).then(function (response) {
+    ).then((response) => {
       deferred.resolve(response.data);
-    }, function (error) {
+    }).catch((error) => {
       deferred.reject(error);
       $log.error(error);
     });
@@ -53,9 +53,9 @@ module.exports = function ($http, $log, $q) {
   this.delete = function (recipe) {
     var deferred = $q.defer();
 
-    $http.delete(API_URL + '/' + recipe.id).then(function (response) {
+    $http.delete(API_URL + '/' + recipe.id).then((response) => {
       deferred.resolve(response.data);
-    }, function (error) {
+    }).catch((error) => {
       deferred.reject(error);
       $log.error(error);
     });

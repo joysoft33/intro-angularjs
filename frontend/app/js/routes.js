@@ -27,7 +27,7 @@ module.exports = function ($stateProvider, $urlRouterProvider) {
       url: '/views/show/{id}',
       component: 'recipeShow',
       resolve: {
-        recipes: function (RecipesService, $stateParams) {
+        recipe: function (RecipesService, $stateParams) {
           return RecipesService.getById($stateParams.id);
         }
       }

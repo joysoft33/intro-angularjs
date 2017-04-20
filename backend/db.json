@@ -1,34 +1,46 @@
 {
-    "dishes": [
-        {
-            "id": 1,
-            "name": "Galette-saucisse",
-            "type": "Plat principal",
-            "image": "http://localhost:3000/images/1.jpg"
-        },
-        {
-            "id": 2,
-            "name": "Kig ha farz",
-            "type": "Plat principal",
-            "image": "http://localhost:3000/images/5.jpg"
-        },
-        {
-            "id": 3,
-            "name": "Kouign-amann",
-            "type": "Dessert",
-            "image": "http://localhost:3000/images/4.jpg"
-        },
-        {
-            "id": 4,
-            "name": "Far breton",
-            "type": "Dessert",
-            "image": "http://localhost:3000/images/2.jpg"
-        },
-        {
-            "id": 5,
-            "name": "Crêpes",
-            "type": "Dessert",
-            "image": "http://localhost:3000/images/3.jpg"
-        }
-    ]
+  "dishes": [
+    {
+      "id": 1,
+      "name": "Galette-saucisse",
+      "type": "Plat principal",
+      "image": "http://localhost:3000/images/1.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Kig ha farz",
+      "type": "Plat principal",
+      "image": "http://localhost:3000/images/5.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Kouign-amann",
+      "type": "Dessert",
+      "image": "http://localhost:3000/images/4.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Far breton",
+      "type": "Dessert",
+      "image": "http://localhost:3000/images/2.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Crêpes",
+      "type": "Dessert",
+      "image": "http://localhost:3000/images/3.jpg"
+    },
+    {
+      "name": "saf azer aze raze",
+      "type": "z rzaer azer",
+      "image": "a zerazer azer",
+      "id": 6
+    },
+    {
+      "name": "azerazer zaer az",
+      "type": "eza erzer",
+      "image": "azer aze r",
+      "id": 7
+    }
+  ]
 }

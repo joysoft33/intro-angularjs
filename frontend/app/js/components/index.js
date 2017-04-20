@@ -3,8 +3,8 @@
 /**
  * Create the components module
  */
-const components = angular.module('recipes.components', []);
+angular.module('recipes.components', [])
 
-components.component("recipesList", require('./component.list'));
-components.component("recipeShow", require('./component.show'));
-components.component("recipeCreate", require('./component.create'));
+  .component("recipesList", require('./component.list'))
+  .component("recipeShow", require('./component.show'))
+  .component("recipeCreate", require('./component.create'));

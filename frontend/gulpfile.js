@@ -2,55 +2,64 @@ var gulp = require('gulp'),
   del = require('del'),
   browserify = require('browserify'),
   babelify = require('babelify'),
-  source = require('vinyl-source-stream'),
-  buffer = require('vinyl-buffer'),
+  vinylSource = require('vinyl-source-stream'),
+  vinylBuffer = require('vinyl-buffer'),
   runSequence = require('run-sequence'),
   gulpLoadPlugins = require('gulp-load-plugins'),
   plugins = gulpLoadPlugins();
 
+// Get vendors dependencies from package.json file
 var packageJson = require('./package.json');
 var dependencies = Object.keys(packageJson && packageJson.dependencies || {});
 
-var config = {
+// The source files paths
+var src = {
   index: 'app/index.html',
   entry: 'app/js/app.js',
   js: 'app/js/**/*.js',
   images: 'app/images/*.*',
   fonts: ['app/fonts/*.*', 'node_modules/bootstrap/dist/fonts/*.*'],
   html: 'app/**/*.html',
-  styles: 'app/css/*.css'
-}
+  styles: 'app/css/*.scss'
+};
 
-var dist = {
+// The destination paths
+var dst = {
   path: 'dist/',
   images: 'images/',
   fonts: 'fonts/',
   vendors: 'vendors/',
   styles: 'css/',
   scripts: 'js/'
-}
+};
 
-gulp.task('dev', function () {
-  runSequence(
-    'clean',
-    'vet', ['buildDev', 'copy-fonts', 'copy-images', 'stylesDev']
-  );
+/**
+ * MAIN TASKS
+ */
+gulp.task('dev', ['buildDev', 'copy-fonts', 'copy-images', 'stylesDev']);
+
+gulp.task('watch:dev', function () {
+  gulp.watch([src.js, src.index], ['buildDev']);
+  gulp.watch(src.styles, ['stylesDev']);
+  gulp.watch(src.fonts, ['copy-fonts']);
+  gulp.watch(src.images, ['copy-images']);
 });
 
-gulp.task('prod', function () {
-  runSequence(
-    'clean',
-    'vet', ['buildProd', 'copy-fonts', 'copy-images', 'stylesProd']
-  );
+gulp.task('prod', ['buildProd', 'copy-fonts', 'copy-images', 'stylesProd']);
+
+gulp.task('watch:prod', function () {
+  gulp.watch([src.js, src.index], ['buildProd']);
+  gulp.watch(src.styles, ['stylesProd']);
+  gulp.watch(src.fonts, ['copy-fonts']);
+  gulp.watch(src.images, ['copy-images']);
 });
 
-gulp.task('clean', function () {
-  return gulp.src(dist.path + '*')
-    .pipe(plugins.rimraf());
-});
-
+/**
+ * COMMON SUB TASKS
+ */
+// Control every js source file syntaxt
 gulp.task('vet', function () {
-  return gulp.src(config.js)
+  return gulp.src(src.js)
     .pipe(plugins.jshint())
     .pipe(plugins.jscs())
     .pipe(plugins.jshint.reporter('jshint-stylish'), {
@@ -59,24 +68,34 @@ gulp.task('vet', function () {
     .pipe(plugins.jshint.reporter('fail'));
 });
 
-gulp.task('dependencies', function () {
-  return gulp.src(config.index)
+// Extract main html file specific vendors includes
+// Write them in specific destination directory
+// and replace links in main html with their new paths
+gulp.task('dependencies', function (cb) {
+  gulp.src(src.index)
     .pipe(plugins.htmlDependencies({
-      dest: dist.path,
-      prefix: dist.vendors
+      dest: dst.path,
+      prefix: dst.vendors
     }))
-    .pipe(gulp.dest(dist.path));
+    .pipe(gulp.dest(dst.path));
+  cb();
 });
 
-// DEV
+/**
+ * DEVELOPMENT : SUB TASKS
+ */
+// Compile sass files
 gulp.task('stylesDev', ['clean-styles'], function () {
-  return gulp.src(config.styles)
-    .pipe(gulp.dest(dist.path + dist.styles))
+  return gulp.src(src.styles)
+    .pipe(plugins.sass())
+    .pipe(gulp.dest(dst.path + dst.styles));
 });
 
-gulp.task('buildDev', ['clean-js', 'dependencies'], function () {
+// Browserify, babelify, process ngInject annotations
+// Includes view html files into internal js templates
+gulp.task('buildDev', ['vet', 'clean-js', 'dependencies'], function () {
   return browserify({
-      entries: [config.entry],
+      entries: [src.entry],
       extensions: ['.js'],
       debug: true
     })
@@ -85,68 +104,82 @@ gulp.task('buildDev', ['clean-js', 'dependencies'], function () {
       presets: ['es2015']
     })
     .bundle()
-    .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe(plugins.ngAnnotate())
+    .pipe(vinylSource('app.js'))
+    .pipe(vinylBuffer())
     .pipe(plugins.angularEmbedTemplates())
-    .pipe(gulp.dest(dist.path + dist.scripts))
-    pipe(plugins.livereload());
-});
-
-// PROD
-gulp.task('stylesProd', ['clean-styles'], function () {
-  return gulp.src(config.styles)
-    .pipe(plugins.cleanCss())
-    .pipe(gulp.dest(dist.path + dist.styles))
-});
-
-gulp.task('buildProd', ['clean-js', 'dependencies'], function () {
-  return browserify({
-      entries: [config.entry],
-      extensions: ['.js'],
-      debug: true
-    })
-    .external(dependencies)
-    .transform('babelify', {
-      presets: ['es2015']
-    })
-    .bundle()
-    .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe(plugins.ngAnnotate())
-    .pipe(plugins.uglify())
-    .pipe(gulp.dest(dist.path + dist.scripts))
+    .pipe(gulp.dest(dst.path + dst.scripts))
     .pipe(plugins.livereload());
 });
 
-gulp.task('copy-images', ['clean-images'], function () {
-  return gulp.src(config.images)
-    .pipe(gulp.dest(dist.path + dist.images));
+/**
+ * PRODUCTION : SUB TASKS
+ */
+// Compile and minify sass files
+gulp.task('stylesProd', ['clean-styles'], function () {
+  return gulp.src(src.styles)
+    .pipe(plugins.sass())
+    .pipe(plugins.cleanCss())
+    .pipe(gulp.dest(dst.path + dst.styles));
 });
 
+// Browserify, babelify, process ngInject annotations
+// Includes view html files into internal js templates
+// Finally uglify js file
+gulp.task('buildProd', ['vet', 'clean-js', 'dependencies'], function () {
+  return browserify({
+      entries: [src.entry],
+      extensions: ['.js']
+    })
+    .external(dependencies)
+    .transform('babelify', {
+      presets: ['es2015']
+    })
+    .bundle()
+    .pipe(vinylSource('app.js'))
+    .pipe(vinylBuffer())
+    .pipe(plugins.ngAnnotate())
+    .pipe(plugins.angularEmbedTemplates())
+    .pipe(plugins.uglify())
+    .pipe(gulp.dest(dst.path + dst.scripts))
+    .pipe(plugins.livereload());
+});
+
+// Copy image files into dist directory
+gulp.task('copy-images', ['clean-images'], function () {
+  return gulp.src(src.images)
+    .pipe(gulp.dest(dst.path + dst.images));
+});
+
+// Copy font files into dist directory
+// Copy vendors fonts into the right destination
 gulp.task('copy-fonts', ['clean-fonts'], function () {
-  return gulp.src(config.fonts, { base: process.cwd() })
-    .pipe(plugins.rename(function(path){
+  return gulp.src(src.fonts, {
+      base: process.cwd()
+    })
+    .pipe(plugins.rename(function (path) {
       var parts = path.dirname.split('/');
       if (parts[0] !== "app") {
-        path.dirname = dist.vendors + parts.slice(1).join('/');
+        path.dirname = dst.vendors + parts.slice(1).join('/');
       }
     }))
-    .pipe(gulp.dest(dist.path));
+    .pipe(gulp.dest(dst.path));
 });
 
-gulp.task('clean-images', function () {
-  del(dist.path + dist.images);
-});
-
-gulp.task('clean-fonts', function () {
-  del(dist.path + dist.fonts)
-});
-
+/**
+ * CLEANING TASKS
+ */
 gulp.task('clean-js', function () {
-  del(dist.path + dist.js)
+  del(dst.path + dst.js + '*');
 });
 
 gulp.task('clean-styles', function () {
-  del(dist.path + dist.css)
+  del(dst.path + dst.css + '*');
+});
+
+gulp.task('clean-images', function () {
+  del(dst.path + dst.images + '*');
+});
+
+gulp.task('clean-fonts', function () {
+  del(dst.path + dst.fonts + '*');
 });

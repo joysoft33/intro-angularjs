@@ -14,10 +14,8 @@ module.exports = {
   controller: function (RecipesService, $state) {
     'ngInject';
 
-    this.a = this.recipe;
-    
-    //
-    this.save = (recipe) => {
+    // Save the modified recipe
+    this.saveRecipe = (recipe) => {
       RecipesService.save(recipe).then((items) => {
         $state.go('list');
       }).catch((err) => {});

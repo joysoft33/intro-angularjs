@@ -3,6 +3,6 @@
 /**
  * Create the services module
  */
-const services = angular.module('recipes.services', []);
+angular.module('recipes.services', [])
 
-services.service('RecipesService', require('./service'));
+  .service('RecipesService', require('./service.recipe'));
