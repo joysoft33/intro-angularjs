@@ -1,0 +1,34 @@
+{
+  "dishes": [
+    {
+      "id": 1,
+      "name": "Galette-saucisse",
+      "type": "Plat principal",
+      "image": "http://i.imgur.com/z5EUFPD.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Kig ha farz",
+      "type": "Plat principal",
+      "image": "http://i.imgur.com/qF1RDyc.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Kouign-amann",
+      "type": "Dessert",
+      "image": "http://i.imgur.com/UkENlUZ.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Far breton",
+      "type": "Dessert",
+      "image": "http://i.imgur.com/D8uIaWF.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Crêpes",
+      "type": "Dessert",
+      "image": "http://i.imgur.com/ZOptOgT.jpg"
+    }
+  ]
+}
