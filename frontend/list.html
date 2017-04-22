@@ -1,0 +1,26 @@
+<header>
+  <h1>Recettes maison</h1>
+</header>
+<div ng-if="$ctrl.model.list.length > 0">
+  <input id="search" class="form-control" placeholder="Rechercher..." ng-model="$ctrl.model.query" />
+  <div class="content">
+    <div ng-repeat="item in $ctrl.model.list | filter : $ctrl.model.query" ng-class="{completed: item.completed}" class="item">
+      <img ng-src="{{item.image}}" />
+      <div class="text">
+        <div class="name">{{item.name}}</div>
+        <div class="type">{{item.type}}</div>
+      </div>
+      <div class="commands">
+        <span class="close" ng-click="$ctrl.removeItem(item)">x</span>
+        <input type="checkbox" ng-model="item.completed" />
+      </div>
+    </div>
+  </div>
+</div>
+<div class="actions">
+  <button class="btn btn-success" ng-click="$ctrl.addItem()">Ajouter...</button>
+  <span ng-if="$ctrl.model.list.length > 0">
+    <button class="btn btn-primary" ng-model="$ctrl.model.allChecked" ng-click="$ctrl.markAll($ctrl.model.allChecked)">Tout cocher</button>
+    <button class="btn btn-danger" ng-click="$ctrl.clearCompletedItems()">Supprimer les recettes cochées</button>
+  </span>
+</div>
